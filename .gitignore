@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Compiled output
+dist/
+build/
+*.js
+*.js.map
+*.d.ts
+*.d.ts.map
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.sublime-project
+.sublime-workspace
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Logs
+logs/
+*.log
+lerna-debug.log*
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temp
+tmp/
+temp/
+*.tmp
+
+# Cache
+.cache/
+.eslintcache
+
+# Build artifacts
+dist/
+build/
+out/
+
+# IDE settings
+.vscode
+.idea
+*.iml
+*.iws
+*.ipr
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Git
+.git
+
+# Keep compiled source (for distribution)
+!dist/**
+!build/**

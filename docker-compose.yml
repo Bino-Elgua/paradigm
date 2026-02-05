@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # Paradigm Stack API
+  paradigm-stack:
+    build: .
+    container_name: paradigm-stack-api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      LOG_LEVEL: info
+      PHASE: 1
+      PARADIGM_INSTANTIATION_MODE: isolated
+      QDRANT_URL: http://qdrant:6333
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - qdrant
+      - redis
+    volumes:
+      - ./src:/app/src
+      - ./logs:/app/logs
+    networks:
+      - paradigm-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Qdrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: paradigm-qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    environment:
+      QDRANT_API_KEY: ""
+    networks:
+      - paradigm-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: paradigm-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_storage:/data
+    networks:
+      - paradigm-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Ollama for local LLM
+  ollama:
+    image: ollama/ollama:latest
+    container_name: paradigm-ollama
+    ports:
+      - "11434:11434"
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+    volumes:
+      - ollama_storage:/root/.ollama
+    networks:
+      - paradigm-network
+    profiles:
+      - optional
+
+volumes:
+  qdrant_storage:
+  redis_storage:
+  ollama_storage:
+
+networks:
+  paradigm-network:
+    driver: bridge
