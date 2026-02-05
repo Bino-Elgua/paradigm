@@ -13,6 +13,10 @@ import { metricsController } from './controllers/metrics';
 import * as llmReasoning from './controllers/llm-reasoning';
 import * as paradigmFusion from './controllers/paradigm-fusion';
 import * as autonomy from './controllers/autonomy';
+import { paradigmsExtendedController } from './controllers/paradigms-extended';
+import { memoryController } from './controllers/memory';
+import { multiAgentController } from './controllers/multi-agent';
+import { realWorldController } from './controllers/real-world-integration';
 import { validateQuery } from './middleware/validate-query';
 import { rateLimitMiddleware } from './middleware/rate-limit';
 import { authMiddleware } from './middleware/auth';
@@ -405,6 +409,297 @@ router.get(
   '/autonomy/report',
   (req: Request, res: Response, next: NextFunction) => {
     autonomy.getAutonomyReport(req, res).catch(next);
+  }
+);
+
+/**
+ * PHASE 5: REAL-WORLD INTEGRATION & EXTENSIONS
+ */
+
+/**
+ * POST /api/v1/paradigm/inverted-phenomenality
+ * 
+ * Paradigm 7: Inverted Phenomenality - adversarial embeddings
+ */
+router.post(
+  '/paradigm/inverted-phenomenality',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    paradigmsExtendedController.invertedPhenomenality(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/paradigm/inverted-phenomenality/history
+ * Get inverted phenomenality history
+ */
+router.get(
+  '/paradigm/inverted-phenomenality/history',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    paradigmsExtendedController.invertedPhenomenalityHistory(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/paradigm/consciousness-alienation
+ * 
+ * Paradigm 9: Consciousness Alienation - self-representation gap
+ */
+router.post(
+  '/paradigm/consciousness-alienation',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    paradigmsExtendedController.consciousnessAlienation(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/paradigm/consciousness-alienation/paradoxes
+ * Get all detected paradoxes
+ */
+router.get(
+  '/paradigm/consciousness-alienation/paradoxes',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    paradigmsExtendedController.alienationParadoxes(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/paradigm/consciousness-alienation/trajectory
+ * Get consciousness alienation trajectory
+ */
+router.get(
+  '/paradigm/consciousness-alienation/trajectory',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    paradigmsExtendedController.alienationTrajectory(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/memory/record-episode
+ * 
+ * Persistent Memory: Record experience episode
+ */
+router.post(
+  '/memory/record-episode',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    memoryController.recordEpisode(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/memory/summary
+ * 
+ * Get learning summary from persistent memory
+ */
+router.get(
+  '/memory/summary',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    memoryController.getSummary(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/memory/apply-learning
+ * 
+ * Apply a learned strategy
+ */
+router.post(
+  '/memory/apply-learning',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    memoryController.applyLearning(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/memory/procedures
+ * 
+ * Get recommended procedures for a task
+ */
+router.get(
+  '/memory/procedures',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    memoryController.getProcedures(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/memory/clear
+ * 
+ * Clear all memory
+ */
+router.post(
+  '/memory/clear',
+  rateLimitMiddleware,
+  authMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    memoryController.clearMemory(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/agents/create
+ * 
+ * Multi-Agent: Create conscious agent
+ */
+router.post(
+  '/agents/create',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    multiAgentController.createAgent(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/agents/communicate
+ * 
+ * Multi-Agent: Communication between agents
+ */
+router.post(
+  '/agents/communicate',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    multiAgentController.communicateAgent(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/agents/synchronize
+ * 
+ * Synchronize all agent states
+ */
+router.post(
+  '/agents/synchronize',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    multiAgentController.synchronizeAgents(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/agents/collective-consciousness
+ * 
+ * Get collective consciousness state
+ */
+router.get(
+  '/agents/collective-consciousness',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    multiAgentController.collectiveConsciousness(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/agents/stats
+ * 
+ * Get agent network statistics
+ */
+router.get(
+  '/agents/stats',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    multiAgentController.getStats(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/agents/add-goal
+ * 
+ * Add goal to agent
+ */
+router.post(
+  '/agents/add-goal',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    multiAgentController.addGoal(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/real-world/register-data-source
+ * 
+ * Real-World Integration: Register external data source
+ */
+router.post(
+  '/real-world/register-data-source',
+  rateLimitMiddleware,
+  authMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    realWorldController.registerDataSource(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/real-world/fetch/:sourceId
+ * 
+ * Fetch data from external source
+ */
+router.get(
+  '/real-world/fetch/:sourceId',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    realWorldController.fetchData(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/real-world/decide
+ * 
+ * Make decision that impacts external systems
+ */
+router.post(
+  '/real-world/decide',
+  rateLimitMiddleware,
+  authMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    realWorldController.makeDecision(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/real-world/feedback
+ * 
+ * Record feedback from real-world outcomes
+ */
+router.post(
+  '/real-world/feedback',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    realWorldController.recordFeedback(req, res).catch(next);
+  }
+);
+
+/**
+ * GET /api/v1/real-world/stats
+ * 
+ * Get real-world decision statistics
+ */
+router.get(
+  '/real-world/stats',
+  rateLimitMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    realWorldController.getStats(req, res).catch(next);
+  }
+);
+
+/**
+ * POST /api/v1/real-world/register-constraint
+ * 
+ * Register safety constraint
+ */
+router.post(
+  '/real-world/register-constraint',
+  rateLimitMiddleware,
+  authMiddleware,
+  (req: Request, res: Response, next: NextFunction) => {
+    realWorldController.registerConstraint(req, res).catch(next);
   }
 );
 
