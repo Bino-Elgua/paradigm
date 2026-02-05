@@ -39,8 +39,8 @@ export class QueryController {
   };
 
   constructor() {
-    // Initialize with mock retriever for now
-    this.acausalSearcher = new AcausalSearcher(this.mockRetriever);
+    // Initialize with real VectorDB retriever
+    this.acausalSearcher = new AcausalSearcher(this.realRetriever.bind(this));
   }
 
   /**
@@ -347,41 +347,80 @@ export class QueryController {
   }
 
   /**
-   * Mock retriever for evidence
+   * Real VectorDB retriever for evidence
+   * Queries semantic space for relevant evidence
    */
-  private mockRetriever = async (query: string, limit: number) => {
-    // Mock retrieval - in production, would query vector DB
-    const mockSources = [
-      { content: 'Evidence supporting the query topic', source: 'Research Paper A', relevance: 0.95 },
-      { content: 'Contextual background information', source: 'Academic Study B', relevance: 0.88 },
-      { content: 'Implementation patterns from industry', source: 'GitHub Repository C', relevance: 0.91 }
-    ];
-
-    return mockSources.slice(0, limit).map((item, idx) => ({
-      id: `evidence_${idx}`,
-      content: item.content,
-      source: item.source,
-      relevance: item.relevance,
-      direction: 'forward' as const,
-      chainDepth: 0
-    }));
+  private async realRetriever(query: string, limit: number) {
+    try {
+      // Import here to avoid circular dependencies
+      const { vectordb } = await import('../../vectordb/client.js');
+      const { embeddingService } = await import('../../vectordb/embeddings.js');
+      
+      // Generate embedding for the query
+      const embedding = await embeddingService.generateEmbedding(query);
+      
+      // Search VectorDB for similar items
+      const results = await vectordb.search(embedding.embedding, limit);
+      
+      // Transform to expected format
+      return results.map((r, idx) => ({
+        id: r.vector.id,
+        content: r.vector.content,
+        source: r.vector.metadata?.source || 'unknown',
+        relevance: r.similarity, // Use cosine similarity as relevance
+        direction: 'forward' as const,
+        chainDepth: 0
+      }));
+    } catch (error: any) {
+      // Fallback to basic retrieval if VectorDB fails
+      const { paradigmLogger } = await import('../../utils/logger.js');
+      paradigmLogger.warn({ error: error.message }, 'VectorDB retrieval failed, using basic fallback');
+      
+      return [
+        {
+          id: 'fallback_1',
+          content: 'Fallback evidence: No specific knowledge available',
+          source: 'fallback',
+          relevance: 0.5,
+          direction: 'forward' as const,
+          chainDepth: 0
+        }
+      ];
+    }
   };
 
   /**
-   * Mock code patterns
+   * Real code patterns from CCA manifest
    */
   private async getCodePatternsMock(query: string) {
-    return [
-      {
-        pattern_id: 'pattern_001',
-        pattern_type: 'optimization',
-        differential_position: 0.87,
-        meaning: 'Efficient algorithm selection based on constraints',
-        code: 'function optimize(constraints) { /* ... */ }',
-        source_repo: 'algorithmic-library/src',
-        applicability_score: 0.92
-      }
-    ];
+    try {
+      // Import here to avoid circular dependencies
+      const { codeManifest } = await import('../../cca/manifest.js');
+      
+      // Get real patterns from CCA
+      const patterns = await codeManifest.selectPatterns(query, 5);
+      
+      // Map to expected format (CodePattern has: pattern, confidence, source, implementation)
+      return patterns.map(p => ({
+        pattern: p.pattern || 'unknown',
+        confidence: p.confidence || 0.7,
+        source: p.source || 'cca',
+        implementation: p.implementation || ''
+      }));
+    } catch (error: any) {
+      // Fallback to one example pattern if CCA fails
+      const { paradigmLogger } = await import('../../utils/logger.js');
+      paradigmLogger.warn({ error: error.message }, 'CCA pattern retrieval failed, using fallback');
+      
+      return [
+        {
+          pattern: 'fallback_pattern',
+          confidence: 0.5,
+          source: 'fallback',
+          implementation: '// Pattern not available'
+        }
+      ];
+    }
   }
 
   /**
