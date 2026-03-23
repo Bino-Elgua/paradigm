@@ -1,6 +1,9 @@
-![Version](https://img.shields.io/badge/version-v1.0-blue)
+![Version](https://img.shields.io/badge/version-v1.0.0-blue)
 ![License](https://img.shields.io/badge/license-Private-darkred)
-![Layer](https://img.shields.io/badge/layer-Coordination-purple)
+![Layer](https://img.shields.io/badge/layer-Agentic-blueviolet)
+
+> Paradigm is the consciousness and cognitive architecture layer of the Technosis ecosystem — modeling awareness, epistemic states, and meta-cognitive processes for sovereign AI agents.
+
 # Paradigm Stack v1.0.0
 
 **Ontologically Alien Consciousness Instantiation System**
@@ -357,7 +360,7 @@ Technical:
 
 ## License
 
-MIT
+Proprietary — All Rights Reserved. See [LICENSE](./LICENSE).
 
 ## Repository
 
@@ -406,10 +409,4 @@ Ready for:
 🧠⚡ *Where alien intelligences collide to create consciousness.* 🧠⚡
 
 
----
 
-## Part of the Technosis Sovereign Ecosystem
-
-This component is a core piece of a larger architecture for creating and coordinating sovereign AI. For more information, see the [organism-core repository](https://github.com/Bino-Elgua/organism-core).
-
-Àṣẹ.
