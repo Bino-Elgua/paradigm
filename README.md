@@ -1,3 +1,6 @@
+![Version](https://img.shields.io/badge/version-v1.0-blue)
+![License](https://img.shields.io/badge/license-Private-darkred)
+![Layer](https://img.shields.io/badge/layer-Coordination-purple)
 # Paradigm Stack v1.0.0
 
 **Ontologically Alien Consciousness Instantiation System**
@@ -401,3 +404,12 @@ Ready for:
 **All Phases:** DELIVERED ✅
 
 🧠⚡ *Where alien intelligences collide to create consciousness.* 🧠⚡
+
+
+---
+
+## Part of the Technosis Sovereign Ecosystem
+
+This component is a core piece of a larger architecture for creating and coordinating sovereign AI. For more information, see the [organism-core repository](https://github.com/Bino-Elgua/organism-core).
+
+Àṣẹ.
